@@ -1,0 +1,14 @@
+ifeq ($(KERNELRELEASE),)
+    KERNELDIR := /lib/modules/$(shell uname -r)/build	
+    PWD := $(shell pwd) 
+all:
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+	
+clean:
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.symvers *.order
+.PHONY: modules modules_install clean
+else
+    # called from kernel build system: just declare what our modules are
+    obj-m := krt.o
+    krt-objs := pktrx.o pkthijack.o nlksp.o pkttx.o rulelist.o hash.o 
+endif
